@@ -24,11 +24,15 @@
         var all_answers = '';
         for(var j = 1; j < input_lines.length;j++){
           this_sentence = input_lines[j];
+
+          // get the answers, which are between []
           let array_answers = [...this_sentence.matchAll(regexp)];
           for(var k = 0; k < array_answers.length;k++){
             all_answers += array_answers[k];
           }
-          all_sentences += this_sentence + '\n';
+
+          // get only the sentence without the answers
+          all_sentences += this_sentence.replace(regexp, '') + '\n';
         }
 
         var lines = output_text.split('\n');
@@ -71,6 +75,9 @@
 	</div>
 
 	<div id="text_window" class="text_window">
+    <h3>Edit this side to customize your cloze exercise</h3>
+    <p>First line is always the title. Use underscore (__) for text entry.</p>
+    <p>Possible answers for each blank (i.e., ____) go between square brackets (i.e., [word1, word2])</p>
     <form>
       <textarea id="input_text" rows="35" cols="88">
 Complete as frases abaixo com os tempos adequados do SUBJUNTIVO (presente, imperfeito ou futuro):
@@ -95,6 +102,7 @@ Complete as frases abaixo com os tempos adequados do SUBJUNTIVO (presente, imper
 
   </div>
 	<div id="info_box" class="info_box">
+    <h3>The HTML code for your cloze exercise will display here</h3>
     <form>
       <textarea id="output_code" rows="35" cols="88" readonly>
       <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
