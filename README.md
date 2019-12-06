@@ -41,3 +41,5 @@ In some instances, there are multiple correct answers for one blank. Enter these
 ```
 13. Ela lavará a roupa depois que ___________ (pôr) a mesa. [por, pôr]
 ```
+
+If you are ready to start working on your cloze exercise, [open Cloze HTML builder](http://htmlpreview.github.io/?https://github.com/picoral/cloze_html_builder/blob/master/index.html)
