@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+  	<meta charset="utf-8">
+    <title>Cloze Builder</title>
+    <link href='https://fonts.googleapis.com/css?family=Space Mono' rel='stylesheet'>
+    <link href="style.css" rel="stylesheet">
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.6/d3.min.js"></script>
+		<script src="js/FileSaver.js"></script>
+		<script type="text/javascript">
+
+      function buildCloze(){
+        input_text = document.getElementById('input_text').value;
+        document.getElementById('info_box').innerHTML = input_text;
+      }
+
+
+		</script>
+
+  </head>
+  <body>
+	<div id="top_bar" class="top_bar">
+		<table width="100%">
+			<tr>
+			<td><h2>Cloze Builder </h2></td>
+			<td><div id="cit_info"></div></td>
+			<td><a href="#" class="button" onclick="location.reload();">Clear Builder</a></td>
+
+			</tr>
+		</table>
+
+	</div>
+
+	<div id="text_window" class="text_window">
+    <form>
+      <textarea id="input_text" rows="35" cols="88">
+Complete as frases abaixo com os tempos adequados do SUBJUNTIVO (presente, imperfeito ou futuro):
+1. Vamos comprar um colchão novo quando _____________ (ter) dinheiro. [tivermos]
+2. É aconselhável que as pessoas _______________ (beber) muito líquido durante o verão. [bebam]
+3. Foi importante que Rodney King ____________ (dar) uma entrevista na televisão na sexta-feira passada. [desse]
+4. Talvez amanhã ________ (fazer) bom tempo. [faça]
+5. Esperaria na fila a fim de que _______________ (poder) comprar um ingresso para o show se ___________ (ter) paciência. [pudesse] [tivesse]
+6. Vou almoçar assim que eles ___________ (chegar) em casa. [chegarem]
+7. Nós sugerimos ontem que a Júlia _____________ (pôr) parte do seu salário na poupança. [pusesse]
+8. Mesmo que não __________ (passar) no teste final, o Jorge não repetirá esta matéria. [passe]
+9. Eles jantarão fora hoje se _________________ (conseguir) uma babá. [conseguirem]
+10. Ela espera que o namorado lhe _______ (trazer) uma lembrança de Paris. [traga]
+11. Eu desejava que os testes de português ___________ (ser) mais difíceis. [fossem]
+12. O Pedro vai acampar nas montanhas no próximo fim de semana a não ser que _____ (chover). [chova]
+13. Ela lavará a roupa depois que ___________ (pôr) a mesa. [por, pôr]
+14. Saímos na sexta passada embora ______ (haver) um toque de recolhida imposto pelas autoridades locais em Berkeley. [houvesse]
+15. Temos desejado que as pessoas de diferentes raças ______ (poder) entender-se melhor. [possam]
+16. Tinha sugerido a Marta que _____ (ficar) em casa comigo quando os seus amigos telefonaram e convidaram-na para sair. [ficasse]
+      </textarea>
+    </form>
+
+  </div>
+	<div id="info_box" class="info_box">Enter text on the left to create your cloze exercise</div>
+
+	<div id="bottom_bar" class="bottom_bar">
+    <form><a href="#" class="button" onclick="buildCloze();return false;">Build Exercise!</a></form>
+	</div>
+  </body>
+</html>
