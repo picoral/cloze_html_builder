@@ -21,19 +21,29 @@
         let regexp = /\[.+\]/g;
 
         var all_sentences = '';
-        var all_answers = '';
+        var all_answers = '      	var certas = [';
         for(var j = 1; j < input_lines.length;j++){
           this_sentence = input_lines[j];
 
           // get the answers, which are between []
           let array_answers = [...this_sentence.matchAll(regexp)];
           for(var k = 0; k < array_answers.length;k++){
-            all_answers += array_answers[k];
+            this_answer = array_answers[k];
+            //this_answer = this_answer.replace(/\[/g, '["');
+            this_answer_line = '' + this_answer;
+            this_answer_line = this_answer_line.replace(/\[/g, '["');
+            this_answer_line = this_answer_line.replace(/\]/g, '"]');
+            this_answer_line = this_answer_line.replace(/,\s?/g, '","');
+            this_answer_line = this_answer_line.replace(/\]\s+?\[/g, '], [');
+            all_answers += this_answer_line + ', ';
           }
 
+          new_sentence = this_sentence.replace(regexp, '')
+          new_sentence = new_sentence.replace(/_+/g, '<input type="text">')
           // get only the sentence without the answers
-          all_sentences += this_sentence.replace(regexp, '') + '\n';
+          all_sentences +=  '          <div>' + new_sentence + '</div>\n';
         }
+        all_answers = all_answers.substring(0,all_answers.length-2) + '];\n'
 
         var lines = output_text.split('\n');
 
@@ -54,14 +64,37 @@
         }
 
         output_box.innerHTML = new_lines;
+
       }
 
+      function copyCode() {
+        /* Get the text field */
+        var copyText = document.getElementById('output_code');
 
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+        /* Copy the text inside the text field */
+        document.execCommand('copy');
+
+        /* Alert the copied text */
+        alert('Copied the text to clipboard');
+      }
+
+      function downloadHTML() {
+  		    var content = document.getElementById('output_code').value;
+
+  				var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+  				var newfilename = 'cloze_output.html';
+  				saveAs(blob, newfilename);
+
+  		    }
 
 		</script>
 
   </head>
-  <body>
+  <body onload="buildCloze();">
 	<div id="top_bar" class="top_bar">
 		<table width="100%">
 			<tr>
@@ -76,8 +109,9 @@
 
 	<div id="text_window" class="text_window">
     <h3>Edit this side to customize your cloze exercise</h3>
-    <p>First line is always the title. Use underscore (__) for text entry.</p>
-    <p>Possible answers for each blank (i.e., ____) go between square brackets (i.e., [word1, word2])</p>
+    <p>First line is always the title. Use underscore (__) for text entry.
+      Possible answers for each blank (i.e., ____) go between square brackets (i.e., [word1, word2])</p>
+      <p>Click the "Build Exercise!" button to update the code on the right.</p>
     <form>
       <textarea id="input_text" rows="35" cols="88">
 Complete as frases abaixo com os tempos adequados do SUBJUNTIVO (presente, imperfeito ou futuro):
@@ -103,6 +137,8 @@ Complete as frases abaixo com os tempos adequados do SUBJUNTIVO (presente, imper
   </div>
 	<div id="info_box" class="info_box">
     <h3>The HTML code for your cloze exercise will display here</h3>
+        <p>Click the button copy below to copy these contents and paste contents on a html editor on your course management system.</p>
+        <p>Click the download button to save this as a standalone html file.</p>
     <form>
       <textarea id="output_code" rows="35" cols="88" readonly>
       <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -114,12 +150,7 @@ Complete as frases abaixo com os tempos adequados do SUBJUNTIVO (presente, imper
 
 
       	<script>
-      	var certas = new Array();
-
-      	function preenchaArray(){
-      		ANSWERS HERE
-
-      	}
+      	ANSWERS HERE
 
       	function corrija(){
       		var respostas1 = new Array();
@@ -158,11 +189,9 @@ Complete as frases abaixo com os tempos adequados do SUBJUNTIVO (presente, imper
       			if (respostas1[i] == true) {
       				formulario.elements[i].style.backgroundColor="#90EE90";
       				formulario.elements[i].disabled = true;
-      				document.getElementById(i).src = "correto.png";
       			}
       			else {
       				formulario.elements[i].style.backgroundColor="#FFC0CB"
-      				document.getElementById(i).src = "errado.png";
       			}
       		}
 
@@ -171,12 +200,12 @@ Complete as frases abaixo com os tempos adequados do SUBJUNTIVO (presente, imper
       			formulario.elements[i].value = respostas2[i].replace(/_/g, ' ');
       		}
 
-      		e.innerHTML = "Corretas: " + corretas + ". Total de itens: " + quantos + ". Nota: " + ((corretas/quantos).toPrecision(2)*100) + "%";
+      		e.innerHTML = "Correct Answers: " + corretas + ". Total: " + quantos + ". Score: " + ((corretas/quantos).toPrecision(2)*100) + "%";
       	}
 
       	</script>
       	</head>
-      	<body onload="preenchaArray()">
+      	<body>
 
       	<h2>
       	TITLE HERE
@@ -196,7 +225,11 @@ Complete as frases abaixo com os tempos adequados do SUBJUNTIVO (presente, imper
   </div>
 
 	<div id="bottom_bar" class="bottom_bar">
-    <form><a href="#" class="button" onclick="buildCloze();return false;">Build Exercise!</a></form>
+    <form>
+      <a href="#" class="button" onclick="buildCloze();return false;">Build Exercise!</a>
+      <a href="#" class="button" onclick="copyCode();return false;">Copy Code</a>
+      <a href="#" class="button" onclick="downloadHTML();return false;">Download HTML</a>
+    </form>
 	</div>
   </body>
 </html>
