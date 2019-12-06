@@ -12,6 +12,10 @@
       function buildCloze(){
         input_text = document.getElementById('input_text').value;
         output_box = document.getElementById('output_code');
+
+        output_box.value = output_box.value.replace(/text\/htmlpreview/g, 'text/javascript')
+
+
         output_text = output_box.value;
 
         var input_lines = input_text.split('\n');
@@ -70,7 +74,7 @@
       function copyCode() {
         /* Get the text field */
         var copyText = document.getElementById('output_code');
-        copyText = copyText.replace(/text\/htmlpreview/g, 'text/javascript')
+        copyText.value = copyText.value.replace(/text\/htmlpreview/g, 'text/javascript')
 
         /* Select the text field */
         copyText.select();
@@ -84,6 +88,7 @@
       }
 
       function downloadHTML() {
+
   		    var content = document.getElementById('output_code').value;
           content = content.replace(/text\/htmlpreview/g, 'text/javascript')
 
