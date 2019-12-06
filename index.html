@@ -11,8 +11,47 @@
 
       function buildCloze(){
         input_text = document.getElementById('input_text').value;
-        document.getElementById('info_box').innerHTML = input_text;
+        output_box = document.getElementById('output_code');
+        output_text = output_box.value;
+
+        var input_lines = input_text.split('\n');
+        var title = input_lines[0] + '\n';
+
+        // regex to get stuff between []
+        let regexp = /\[.+\]/g;
+
+        var all_sentences = '';
+        var all_answers = '';
+        for(var j = 1; j < input_lines.length;j++){
+          this_sentence = input_lines[j];
+          let array_answers = [...this_sentence.matchAll(regexp)];
+          for(var k = 0; k < array_answers.length;k++){
+            all_answers += array_answers[k];
+          }
+          all_sentences += this_sentence + '\n';
+        }
+
+        var lines = output_text.split('\n');
+
+        new_lines = ''
+        for(var i = 0; i < lines.length;i++){
+          this_line = lines[i];
+          if (this_line.includes('TITLE HERE')) {
+            new_lines += title;
+          } else if (this_line.includes('SENTENCES HERE')) {
+            new_lines += all_sentences;
+          } else if (this_line.includes('ANSWERS HERE')) {
+            new_lines += all_answers;
+          } else {
+            new_lines += this_line + '\n';
+          }
+
+
+        }
+
+        output_box.innerHTML = new_lines;
       }
+
 
 
 		</script>
@@ -55,7 +94,98 @@ Complete as frases abaixo com os tempos adequados do SUBJUNTIVO (presente, imper
     </form>
 
   </div>
-	<div id="info_box" class="info_box">Enter text on the left to create your cloze exercise</div>
+	<div id="info_box" class="info_box">
+    <form>
+      <textarea id="output_code" rows="35" cols="88" readonly>
+      <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+      <html>
+
+      	<head>
+      	<meta charset="UTF-8">
+      		<title></title>
+
+
+      	<script>
+      	var certas = new Array();
+
+      	function preenchaArray(){
+      		ANSWERS HERE
+
+      	}
+
+      	function corrija(){
+      		var respostas1 = new Array();
+      		var respostas2 = new Array();
+      		var formulario = document.getElementById("myForm");
+      		var quantos = formulario.elements.length - 1;
+      		var e = document.getElementById("resultado");
+      		var corretas = 0;
+      		var comprimento = 0;
+      		var achouCerta = false;
+
+      		e.innerHTML = "";
+
+      		for (var i = 0; i < quantos; i++) {
+      			comprimento = certas[i].length;
+      			var valor = formulario.elements[i].value.toLowerCase();
+      			valor = valor.replace(/(\w)\s+(\w)/g, '$1_$2');
+      			valor = valor.replace(/\s+/g, '');
+      			respostas2.push(valor);
+      			achouCerta = false;
+
+      			for (var j = 0; j < comprimento; j++) {
+      				if (!achouCerta) {
+      					if (valor == certas[i][j]){
+      						corretas = corretas +1;
+      						achouCerta = true;
+      					}
+      				}
+      			}
+
+      			respostas1.push(achouCerta);
+      		}
+
+      		for (var i = 0; i < quantos; i++) {
+      			var pai = formulario.elements[i].parentNode;
+      			if (respostas1[i] == true) {
+      				formulario.elements[i].style.backgroundColor="#90EE90";
+      				formulario.elements[i].disabled = true;
+      				document.getElementById(i).src = "correto.png";
+      			}
+      			else {
+      				formulario.elements[i].style.backgroundColor="#FFC0CB"
+      				document.getElementById(i).src = "errado.png";
+      			}
+      		}
+
+
+      		for (var i = 0; i < quantos; i++) {
+      			formulario.elements[i].value = respostas2[i].replace(/_/g, ' ');
+      		}
+
+      		e.innerHTML = "Corretas: " + corretas + ". Total de itens: " + quantos + ". Nota: " + ((corretas/quantos).toPrecision(2)*100) + "%";
+      	}
+
+      	</script>
+      	</head>
+      	<body onload="preenchaArray()">
+
+      	<h2>
+      	TITLE HERE
+      	</h2>
+      	<form id="myForm">
+
+      	SENTENCES HERE
+
+      	<div id="resultado"></div>
+      	<br><input type=button value="Check Your Answers" onclick="corrija()">
+      	</form>
+
+        </body>
+      </html>
+    </textarea>
+  </form>
+  </div>
 
 	<div id="bottom_bar" class="bottom_bar">
     <form><a href="#" class="button" onclick="buildCloze();return false;">Build Exercise!</a></form>
